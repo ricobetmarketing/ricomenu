@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RICO.BET | VIP DAY DASHBOARD</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Rajdhani:wght@500;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --gold: #d4af37;
+            --gold-glow: rgba(212, 175, 55, 0.4);
+            --bg: #080808;
+            --card: #121212;
+            --red: #ff4d4d;
+        }
+
+        body {
+            background: var(--bg);
+            color: #fff;
+            font-family: 'Rajdhani', sans-serif;
+            margin: 0;
+            padding: 0;
+            line-height: 1.6;
+        }
+
+        .hero {
+            text-align: center;
+            padding: 60px 20px;
+            background: radial-gradient(circle at center, #1a1a1a 0%, #000 100%);
+            border-bottom: 2px solid var(--gold);
+        }
+
+        .logo { font-family: 'Orbitron', sans-serif; font-size: 3.5rem; color: var(--gold); letter-spacing: 10px; margin: 0; }
+        
+        .container { max-width: 900px; margin: 0 auto; padding: 40px 20px; }
+
+        h2.step-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.2rem;
+            color: var(--gold);
+            text-transform: uppercase;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        /* Mission Section */
+        .mission-area {
+            background: var(--card);
+            border: 1px solid #222;
+            border-radius: 20px;
+            padding: 30px;
+            margin-bottom: 40px;
+            position: relative;
+        }
+
+        .unlock-overlay {
+            position: absolute;
+            inset: 0;
+            background: rgba(0,0,0,0.8);
+            backdrop-filter: blur(8px);
+            z-index: 10;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: 20px;
+            transition: 0.5s;
+        }
+
+        .grid-menu {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: 15px;
+            transition: 0.5s ease;
+        }
+
+        .reward-btn {
+            background: #1a1a1a;
+            border: 1px solid #333;
+            padding: 20px;
+            border-radius: 12px;
+            text-align: center;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .reward-btn:hover { border-color: var(--gold); transform: translateY(-5px); }
+        .reward-btn span { display: block; font-size: 2rem; margin-bottom: 5px; }
+        .reward-btn small { font-weight: 700; text-transform: uppercase; color: var(--gold); }
+
+        /* Voucher Display */
+        .voucher-box {
+            display: none;
+            background: linear-gradient(135deg, #d4af37 0%, #b8860b 100%);
+            color: #000;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            animation: slideUp 0.5s forwards;
+        }
+
+        @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+
+        .copy-code {
+            background: rgba(0,0,0,0.2);
+            padding: 10px;
+            font-family: monospace;
+            font-weight: 900;
+            border: 1px dashed #000;
+            margin: 10px 0;
+            display: block;
+        }
+
+        /* Cashback Info */
+        .cashback-banner {
+            background: #111;
+            border-left: 5px solid var(--red);
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        /* Mystery Section */
+        .mystery-area {
+            opacity: 0.3;
+            pointer-events: none;
+            transition: 1s;
+        }
+
+        .mystery-area.unlocked { opacity: 1; pointer-events: all; }
+
+        .mystery-choices { display: flex; gap: 20px; justify-content: center; }
+
+        .mystery-card {
+            flex: 1;
+            background: #1a1a1a;
+            border: 2px dashed #444;
+            padding: 30px;
+            border-radius: 15px;
+            text-align: center;
+            cursor: pointer;
+        }
+
+        .mystery-card:hover { border-color: var(--gold); background: #222; }
+
+        .btn-claim {
+            background: var(--gold);
+            color: #000;
+            padding: 15px 40px;
+            border: none;
+            font-family: 'Orbitron', sans-serif;
+            font-weight: 900;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+
+        @media (max-width: 600px) {
+            .grid-menu { grid-template-columns: repeat(2, 1fr); }
+            .mystery-choices { flex-direction: column; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="hero">
+    <h1 class="logo">RICO.BET</h1>
+    <p style="letter-spacing: 5px; color: #888;">VIP DAY SPECIAL • ONLY FOR ELITE PLAYERS</p>
+</div>
+
+<div class="container">
+
+    <h2 class="step-title"><span>01</span> Mission 1 Reward (5 Choose 1)</h2>
+    <div class="mission-area">
+        <div class="unlock-overlay" id="mission-gate">
+            <button class="btn-claim" onclick="completeMission()">COMPLETE MISSION & UNLOCK</button>
+        </div>
+
+        <div class="grid-menu" id="mission-menu">
+            <div class="reward-btn" onclick="revealVoucher('RELOAD50VIP', '50% Reload Bonus')">
+                <span>💳</span><small>50% Reload</small>
+            </div>
+            <div class="reward-btn" onclick="revealVoucher('FS100DAY', '100 VIP Free Spins')">
+                <span>🎰</span><small>100 Spins</small>
+            </div>
+            <div class="reward-btn" onclick="revealVoucher('FOODVIP15', 'Food Voucher (iFood)')">
+                <span>🍔</span><small>Food Voucher</small>
+            </div>
+            <div class="reward-btn" onclick="revealVoucher('TWITCH777', 'Twitch Gift Card')">
+                <span>💜</span><small>Twitch Card</small>
+            </div>
+            <div class="reward-btn" onclick="revealVoucher('MOBILE888', 'Mobile Reload')">
+                <span>📱</span><small>Mobile Topup</small>
+            </div>
+        </div>
+
+        <div class="voucher-box" id="mission-voucher">
+            <h3 id="v-title" style="margin:0">---</h3>
+            <span class="copy-code" id="v-code">CODE: XXXXXX</span>
+            <button style="border:none; background:transparent; font-weight:bold; cursor:pointer;" onclick="copyCode('v-code')">COPY VOUCHER</button>
+        </div>
+    </div>
+
+    <h2 class="step-title"><span>02</span> Additional Guarantee</h2>
+    <div class="cashback-banner">
+        <div>
+            <b style="color:var(--red); font-size:1.2rem;">5% LOSS PROTECTION</b><br>
+            <small style="color:#666;">Automatic Cashback if you lose today. No claim needed.</small>
+        </div>
+        <div style="font-size:2rem;">🛡️</div>
+    </div>
+
+    <h2 class="step-title"><span>03</span> Mystery Reward (Pick 1)</h2>
+    <div class="mystery-area" id="mystery-section">
+        <div class="mystery-choices" id="mystery-options">
+            <div class="mystery-card" onclick="revealMystery('SWEET-TICKET', 'Sweet Spins Ticket')">
+                <span style="font-size:3rem">🍭</span>
+                <h4>Choice A</h4>
+            </div>
+            <div class="mystery-card" onclick="revealMystery('AVIA-BET', 'Aviatrix Free Bet')">
+                <span style="font-size:3rem">✈️</span>
+                <h4>Choice B</h4>
+            </div>
+        </div>
+        
+        <div class="voucher-box" id="mystery-voucher" style="background: #fff; color: #000; margin-top:20px;">
+            <h3 id="m-title" style="margin:0">---</h3>
+            <span class="copy-code" id="m-code" style="border-color:#ccc">CODE: XXXXXX</span>
+            <button style="border:none; background:transparent; font-weight:bold; cursor:pointer;" onclick="copyCode('m-code')">COPY VOUCHER</button>
+        </div>
+    </div>
+
+</div>
+
+<script>
+    function completeMission() {
+        document.getElementById('mission-gate').style.display = 'none';
+    }
+
+    function revealVoucher(code, title) {
+        // Hide Menu, Show Voucher
+        document.getElementById('mission-menu').style.display = 'none';
+        document.getElementById('mission-voucher').style.display = 'block';
+        document.getElementById('v-title').innerText = title;
+        document.getElementById('v-code').innerText = code;
+
+        // Unlock Mystery Section
+        document.getElementById('mystery-section').classList.add('unlocked');
+    }
+
+    function revealMystery(code, title) {
+        document.getElementById('mystery-options').style.display = 'none';
+        document.getElementById('mystery-voucher').style.display = 'block';
+        document.getElementById('m-title').innerText = title;
+        document.getElementById('m-code').innerText = code;
+    }
+
+    function copyCode(id) {
+        const text = document.getElementById(id).innerText;
+        navigator.clipboard.writeText(text);
+        alert("Voucher Copied: " + text);
+    }
+</script>
+
+</body>
+</html>
